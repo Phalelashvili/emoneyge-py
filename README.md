@@ -22,9 +22,6 @@ client.send_code()
 sms = # received code
 client.login('username', 'password', googleauthcode='foobar', smsauthcode=sms)
 ```
-Receive SMS authentication code
-```python
-client.send_code()
 ```
 Get Balance
 ```python
@@ -37,4 +34,15 @@ client.get_transaction(transactioncode)
 Request money
 ```python
 client.request_money(sender, amount)
+```
+Send money
+:param currency: currency you're sending, default is GEL, default is GEL, accepts GEL, USD, EUR, RUB, AMD, AMZ, UAH
+:param description: description of trade (optional)
+:param protect: if given value between 0 and 5, function will return security code which must be used by recipient to redeem money, value is amount of days till it expires
+```python
+client.send_money(sender, amount, currency='GEL', description='', protect: 5)
+```
+Cancel transaction
+```python
+client.cancel_transaction(transactioncode)
 ```
