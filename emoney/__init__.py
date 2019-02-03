@@ -126,7 +126,7 @@ class eMoneyClient:
         :param sender: recipient
         :param amount: amount of money you want to send
         :param currency: currency you're sending, default is GEL, accepts GEL, USD, EUR, RUB, AMD, AMZ, UAH
-        :param description: description of trade (optional)
+        :param description: description of transaction (optional)
         :return: dict
         '''
         currency = currency.upper() # emoney only accepts uppercase (i think)
@@ -146,7 +146,7 @@ class eMoneyClient:
         :param receiver: recipient
         :param amount: amount of money you want to send
         :param currency: currency you're sending, default is GEL, default is GEL, accepts GEL, USD, EUR, RUB, AMD, AMZ, UAH
-        :param description: description of trade (optional)
+        :param description: description of transaction (optional)
         :param protect: if given value between 0 and 5, function will return security code which must be used by recipient to redeem money, value is amount of days till it expires
         :return: dict
         '''
