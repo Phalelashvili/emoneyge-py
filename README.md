@@ -35,9 +35,9 @@ Request money
 ```python
 client.request_money(sender, amount)
 ```
-Send money
-currency you're sending, default is GEL, default is GEL, accepts GEL, USD, EUR, RUB, AMD, AMZ, UAH
-description of transaction (optional)
+Send money  
+currency you're sending, default is GEL, default is GEL, accepts GEL, USD, EUR, RUB, AMD, AMZ, UAH  
+description of transaction (optional)  
 if given value between 0 and 5, function will return security code which must be used by recipient to redeem money, value is amount of days till it expires
 ```python
 client.send_money(sender, amount, currency='GEL', description='', protect: 5)
