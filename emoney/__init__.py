@@ -1,7 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import parse_qs
-
+from threading import Thread
+from time import sleep
 
 def login_required(func):
     def func_wrapper(self, *args, **kwargs):
@@ -26,6 +27,12 @@ class eMoneyClient:
             return 'eMoney.ge Client - Logged in as %s'%self.username
         else:
             return 'eMoney.ge Client - Not authenticated'
+
+    def keep_alive(self):
+        ''' keep session alive '''
+        while True:
+            sleep(300)
+            self.get_balance()
 
     def login(self, username, password, googleauthcode=None, smsauthcode=None, pincode=None):
         '''
@@ -60,6 +67,7 @@ class eMoneyClient:
                 # idk what it returns if code is wrong
             self.logged_in = True
             print('eMoney client logged in')
+            Thread(target=self.keep_alive, daemon=True).start()
             return {'success': True}
         else:
             raise Exception('invalid username or password', login.content.decode('utf-8'))
