@@ -1,8 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import parse_qs
-from threading import Thread
-from time import sleep
+
 
 def login_required(func):
     def func_wrapper(self, *args, **kwargs):
@@ -27,12 +26,6 @@ class eMoneyClient:
             return 'eMoney.ge Client - Logged in as %s'%self.username
         else:
             return 'eMoney.ge Client - Not authenticated'
-
-    def keep_alive(self):
-        ''' keep session alive '''
-        while True:
-            sleep(300)
-            self.get_balance()
 
     def login(self, username, password, googleauthcode=None, smsauthcode=None, pincode=None):
         '''
@@ -67,7 +60,6 @@ class eMoneyClient:
                 # idk what it returns if code is wrong
             self.logged_in = True
             print('eMoney client logged in')
-            Thread(target=self.keep_alive, daemon=True).start()
             return {'success': True}
         else:
             raise Exception('invalid username or password', login.content.decode('utf-8'))
@@ -106,7 +98,7 @@ class eMoneyClient:
         elif status == 'bg-registered':
             data['status'] = 'registered'
 
-        info = table.find_all('i', {'class': 'icon-question-sign'})
+        info = table.find_all('i', {'class': ['icon-question-sign', 'icon-ok']})
         sender = info[1].parent.text.replace('\n', '').split(',')
         receiver = info[0].parent.text.replace('\n', '').split(',')
         data['sender']['account'] = sender[1].replace(' ', '')
@@ -134,7 +126,7 @@ class eMoneyClient:
         :param sender: recipient
         :param amount: amount of money you want to send
         :param currency: currency you're sending, default is GEL, accepts GEL, USD, EUR, RUB, AMD, AMZ, UAH
-        :param description: description of transaction (optional)
+        :param description: description of trade (optional)
         :return: dict
         '''
         currency = currency.upper() # emoney only accepts uppercase (i think)
@@ -153,8 +145,8 @@ class eMoneyClient:
         '''
         :param receiver: recipient
         :param amount: amount of money you want to send
-        :param currency: currency you're sending, default is GEL, accepts GEL, USD, EUR, RUB, AMD, AMZ, UAH
-        :param description: description of transaction (optional)
+        :param currency: currency you're sending, default is GEL, default is GEL, accepts GEL, USD, EUR, RUB, AMD, AMZ, UAH
+        :param description: description of trade (optional)
         :param protect: if given value between 0 and 5, function will return security code which must be used by recipient to redeem money, value is amount of days till it expires
         :return: dict
         '''
